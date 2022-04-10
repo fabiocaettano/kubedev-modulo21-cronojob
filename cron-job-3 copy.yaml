@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: countdown-cron
+spec:
+  schedule: "*/1 * * * * "
+  concurrencyPolicy: Replace
+  jobTemplate:
+    spec:
+      backoffLimit: 20
+      parallelism: 4
+      completions: 3
+      template:
+        spec:
+          containers:
+          - name: roleta-job
+            image: kubedevio/roleta
+            args:
+              - "c"
+              - "4"
+              - "m"
+              - "10"            
+          restartPolicy: Never
